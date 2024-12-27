@@ -1,0 +1,33 @@
+class Solution {
+public:
+unordered_map<string,int>umap;
+  
+     bool solve(int idx,string &s,vector<int>&dp){
+        if(idx>=s.length()){
+            return true;
+        }
+        if(umap.find(s)!=umap.end()){
+            return true;
+        }
+        if(dp[idx]!=-1){
+            return dp[idx];
+        }
+        for(int l=1;l<s.length();l++){
+            string temp=s.substr(idx,l);
+            if(umap.find(temp)!=umap.end()){
+                bool ans=solve(idx+l,s,dp);
+                if(ans){
+                    return dp[idx]=true;
+                }
+            }
+        }
+        return dp[idx]=false;
+     }
+    bool wordBreak(string s, vector<string>& wordDict) {
+        for(string str:wordDict){
+            umap[str]++;
+        }
+        vector<int>dp(s.length()+1,-1);
+        return solve(0,s,dp);
+    }
+};
